@@ -481,11 +481,13 @@ function setSlotStatus(rId, pId, mIdx, cls, txt) {
 }
 
 function toCsvUrl(url) {
-  if (url.includes('output=csv') || url.includes('export?format=csv')) return url;
-  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-  const gid = (url.match(/gid=(\d+)/) || [])[1] || '0';
-  if (match) return `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv&gid=${gid}`;
-  return url;
+  let csvUrl = url;
+  if (!url.includes('output=csv') && !url.includes('export?format=csv')) {
+    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+    const gid = (url.match(/gid=(\d+)/) || [])[1] || '0';
+    if (match) csvUrl = `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv&gid=${gid}`;
+  }
+  return `https://corsproxy.io/?url=${encodeURIComponent(csvUrl)}`;
 }
 
 async function recargarTodo() {
