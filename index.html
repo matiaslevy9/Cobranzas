@@ -473,6 +473,34 @@ function buildUI() {
   `).join('');
 }
 
+// ── PROXIES ──
+const PROXIES = [
+  url => `https://corsproxy.io/?url=${encodeURIComponent(url)}`,
+  url => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+  url => `https://thingproxy.freeboard.io/fetch/${url}`,
+];
+
+function toBaseCsvUrl(url) {
+  if (url.includes('output=csv') || url.includes('export?format=csv')) return url;
+  const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+  const gid = (url.match(/gid=(\d+)/) || [])[1] || '0';
+  if (match) return `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv&gid=${gid}`;
+  return url;
+}
+
+async function fetchWithFallback(url) {
+  const baseUrl = toBaseCsvUrl(url);
+  for (const proxy of PROXIES) {
+    try {
+      const resp = await fetch(proxy(baseUrl));
+      if (!resp.ok) continue;
+      const text = await resp.text();
+      if (text && text.length > 10) return text;
+    } catch(e) { continue; }
+  }
+  throw new Error('No se pudo acceder al archivo. Verificá que esté publicado como CSV y sea público.');
+}
+
 // ── LOAD SLOT ──
 async function cargarSlot(rId, pId, mIdx) {
   const url = document.getElementById(`surl-${rId}-${pId}-${mIdx}`).value.trim();
@@ -482,10 +510,7 @@ async function cargarSlot(rId, pId, mIdx) {
   setSlotStatus(rId, pId, mIdx, 'loading', 'cargando...');
 
   try {
-    let csvUrl = toCsvUrl(url);
-    const resp = await fetch(csvUrl);
-    if (!resp.ok) throw new Error('No se pudo acceder. Verificá que esté publicado como CSV.');
-    const text = await resp.text();
+    const text = await fetchWithFallback(url);
     const rows = parseCSV(text).map(normalizeRow);
     if (rows.length < 1) throw new Error('El archivo parece estar vacío.');
 
@@ -512,16 +537,6 @@ function setSlotStatus(rId, pId, mIdx, cls, txt) {
   const el = document.getElementById(`sstatus-${rId}-${pId}-${mIdx}`);
   el.className = 'slot-status ' + cls;
   el.textContent = txt;
-}
-
-function toCsvUrl(url) {
-  let csvUrl = url;
-  if (!url.includes('output=csv') && !url.includes('export?format=csv')) {
-    const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
-    const gid = (url.match(/gid=(\d+)/) || [])[1] || '0';
-    if (match) csvUrl = `https://docs.google.com/spreadsheets/d/${match[1]}/export?format=csv&gid=${gid}`;
-  }
-  return `https://corsproxy.io/?url=${encodeURIComponent(csvUrl)}`;
 }
 
 async function recargarTodo() {
