@@ -553,11 +553,20 @@ async function recargarTodo() {
 function parseCSV(text) {
   const lines = text.split('\n').filter(l => l.trim());
   if (lines.length < 2) return [];
-  const headers = parseLine(lines[0]);
+  const rawHeaders = parseLine(lines[0]);
+  // Handle duplicate column names: VERIF/PAGO aparece dos veces
+  // La primera instancia = F1, la segunda = F2
+  const seen = {};
+  const headers = rawHeaders.map(h => {
+    const k = h.trim();
+    if (!seen[k]) { seen[k] = 1; return k; }
+    seen[k]++;
+    return k + '_' + seen[k];
+  });
   return lines.slice(1).map(line => {
     const vals = parseLine(line);
     const obj = {};
-    headers.forEach((h,j) => obj[h.trim()] = (vals[j]||'').trim());
+    headers.forEach((h,j) => obj[h] = (vals[j]||'').trim());
     return obj;
   }).filter(r => Object.values(r).some(v=>v));
 }
@@ -591,8 +600,10 @@ function normalizeRow(r) {
 
   const vto1   = parseFecha(n['1° VTO']||n['1 VTO']||'');
   const vto2   = parseFecha(n['2° VTO']||n['2 VTO']||'');
-  const verif1 = parseFecha(n['VERIF/ PAGO']||n['VERIF/PAGO']||'');
-  const verif2 = parseFecha(n['VERIF/ PAGO.1']||'');
+  // VERIF/PAGO aparece dos veces en el sheet con el mismo nombre
+  // parseCSV las renombra: primera = 'VERIF/PAGO', segunda = 'VERIF/PAGO_2'
+  const verif1 = parseFecha(n['VERIF/PAGO']||n['VERIF/ PAGO']||'');
+  const verif2 = parseFecha(n['VERIF/PAGO_2']||n['VERIF/ PAGO.1']||n['VERIF/PAGO.1']||'');
 
   n._vto1 = vto1; n._vto2 = vto2;
 
