@@ -210,35 +210,43 @@ header {
 
 /* ── CONSOLIDADO GLOBAL ── */
 .global-banner {
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:12px;
+  margin-bottom:8px;
+}
+@media(max-width:1100px){ .global-banner { grid-template-columns: repeat(3,1fr); } }
+@media(max-width:700px){ .global-banner { grid-template-columns: repeat(2,1fr); } }
+
+.g-kpi {
   background:var(--mov-blue-dk);
   border-radius:12px;
-  padding:28px 32px;
-  margin-bottom:8px;
-  display:grid;
-  grid-template-columns: 200px 1fr;
-  gap:32px;
-  box-shadow: 0 4px 16px rgba(0,114,176,0.2);
+  padding:20px 22px;
+  box-shadow: 0 2px 8px rgba(0,114,176,0.15);
 }
-.global-left { border-right:1px solid rgba(255,255,255,0.2); padding-right:32px; }
+.g-kpi-icon { font-size:20px; margin-bottom:10px; line-height:1; }
+.g-kpi-num {
+  font-family:'DM Mono',monospace; font-size:36px; font-weight:600;
+  color:white; line-height:1; word-break:break-all;
+}
+.g-kpi-lbl { font-size:12px; color:rgba(255,255,255,0.65); margin-top:8px; line-height:1.5; font-weight:500; }
+
+.g-kpi-total {
+  background: linear-gradient(135deg, var(--mov-blue-dk), var(--mov-blue));
+  border-radius:12px;
+  padding:20px 22px;
+  box-shadow: 0 2px 8px rgba(0,114,176,0.2);
+  display:flex; flex-direction:column; justify-content:center;
+}
 .global-total-label {
-  font-size:11px; font-weight:600; letter-spacing:2px; text-transform:uppercase;
+  font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
   color:rgba(255,255,255,0.6); margin-bottom:8px;
 }
 .global-total-num {
-  font-family:'DM Mono',monospace; font-size:64px; font-weight:500;
-  color:white; line-height:1;
+  font-family:'DM Mono',monospace; font-size:36px; font-weight:600;
+  color:white; line-height:1; word-break:break-all;
 }
-.global-total-sub { font-size:13px; color:rgba(255,255,255,0.55); margin-top:8px; }
-.global-right { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; align-items:center; }
-@media(max-width:900px){ .global-right { grid-template-columns:repeat(2,1fr); } }
-
-.g-kpi { }
-.g-kpi-icon { font-size:22px; margin-bottom:8px; }
-.g-kpi-num {
-  font-family:'DM Mono',monospace; font-size:40px; font-weight:500;
-  color:white; line-height:1;
-}
-.g-kpi-lbl { font-size:13px; color:rgba(255,255,255,0.6); margin-top:6px; line-height:1.5; }
+.global-total-sub { font-size:11px; color:rgba(255,255,255,0.5); margin-top:6px; }
 
 /* ── PENDIENTES POR MES/PRODUCTO ── */
 .pend-month-block { margin-bottom:20px; }
@@ -316,6 +324,112 @@ header {
   font-size:13px; color:var(--muted); text-align:center; padding:32px;
   background:var(--surface); border:1px solid var(--border); border-radius:10px;
 }
+
+/* ── MAIN NAV TABS ── */
+.main-nav {
+  display:flex; gap:4px; margin-bottom:28px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; padding:5px; width:fit-content;
+  box-shadow:0 1px 3px rgba(0,0,0,0.05);
+}
+.main-nav-btn {
+  padding:8px 20px; border-radius:7px; border:none;
+  background:transparent; font-family:'Inter',sans-serif;
+  font-size:13px; font-weight:600; color:var(--muted);
+  cursor:pointer; transition:all 0.15s;
+}
+.main-nav-btn.active {
+  background:var(--mov-blue-dk); color:white;
+  box-shadow:0 1px 4px rgba(0,114,176,0.3);
+}
+.main-nav-btn:hover:not(.active) { color:var(--text); background:var(--bg2); }
+.main-view { display:none; }
+.main-view.active { display:block; }
+
+/* ── ANALÍTICA ── */
+.an-section { margin-bottom:28px; }
+
+.an-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+@media(max-width:900px){ .an-grid-2 { grid-template-columns:1fr; } }
+
+.an-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:10px; overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,0.05);
+}
+.an-card-header {
+  padding:12px 16px; border-bottom:1px solid var(--border);
+  font-size:13px; font-weight:700;
+  display:flex; justify-content:space-between; align-items:center;
+  background:#f8fafc;
+}
+.an-card-badge {
+  font-family:'DM Mono',monospace; font-size:11px;
+  background:var(--bg2); border:1px solid var(--border);
+  padding:2px 8px; border-radius:4px; color:var(--muted);
+}
+.an-scroll { max-height:380px; overflow-y:auto; }
+.an-scroll::-webkit-scrollbar { width:4px; }
+.an-scroll::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+/* Bar chart rows */
+.bar-row {
+  display:flex; align-items:center; gap:10px;
+  padding:8px 14px; border-bottom:1px solid #f1f5f9;
+}
+.bar-row:last-child { border-bottom:none; }
+.bar-row:hover { background:#f8fafc; }
+.bar-label { font-size:12px; font-weight:600; width:160px; flex-shrink:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.bar-label.vendedor { width:200px; }
+.bar-wrap { flex:1; background:var(--bg2); border-radius:999px; height:8px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:999px; transition:width 0.6s; }
+.bar-pct { font-family:'DM Mono',monospace; font-size:12px; font-weight:600; width:48px; text-align:right; }
+.bar-count { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted); width:60px; text-align:right; }
+.bar-rank { font-family:'DM Mono',monospace; font-size:11px; color:var(--muted2); width:24px; flex-shrink:0; }
+
+/* Evolution table */
+.evo-table { width:100%; border-collapse:collapse; min-width:500px; }
+.evo-table th {
+  background:#f1f5f9; padding:9px 12px;
+  font-size:11px; font-weight:700; letter-spacing:0.8px;
+  text-transform:uppercase; color:var(--muted);
+  border-bottom:1px solid var(--border); text-align:right; white-space:nowrap;
+}
+.evo-table th:first-child { text-align:left; }
+.evo-table td {
+  padding:10px 12px; border-bottom:1px solid #f1f5f9;
+  font-family:'DM Mono',monospace; font-size:12px; text-align:right;
+}
+.evo-table td:first-child { text-align:left; font-family:'Inter',sans-serif; font-weight:600; font-size:13px; }
+.evo-table tr:last-child td { border-bottom:none; }
+.evo-table tr:hover td { background:#f8fafc; }
+
+/* Vendor detail table */
+.vend-table { width:100%; border-collapse:collapse; min-width:600px; }
+.vend-table th {
+  background:#f1f5f9; padding:9px 12px;
+  font-size:11px; font-weight:700; letter-spacing:0.8px;
+  text-transform:uppercase; color:var(--muted);
+  border-bottom:1px solid var(--border); text-align:right; white-space:nowrap;
+}
+.vend-table th:first-child, .vend-table th:nth-child(2) { text-align:left; }
+.vend-table td {
+  padding:10px 12px; border-bottom:1px solid #f1f5f9;
+  font-family:'DM Mono',monospace; font-size:12px; text-align:right;
+}
+.vend-table td:first-child, .vend-table td:nth-child(2) { text-align:left; font-family:'Inter',sans-serif; }
+.vend-table tr:last-child td { border-bottom:none; }
+.vend-table tr:hover td { background:#f8fafc; }
+
+/* Filter row for analítica */
+.an-filter-row { display:flex; gap:8px; margin-bottom:12px; align-items:center; flex-wrap:wrap; }
+.an-filter-row label { font-size:12px; color:var(--muted); font-weight:500; }
+.an-filter-row select {
+  background:var(--surface); border:1px solid var(--border); border-radius:6px;
+  padding:6px 12px; font-size:13px; font-family:'Inter',sans-serif;
+  color:var(--text); outline:none; cursor:pointer;
+}
+.an-filter-row select:focus { border-color:var(--mov-blue); }
 </style>
 </head>
 <body>
@@ -342,49 +456,125 @@ header {
     <strong>Cómo conectar:</strong> Google Sheet → Archivo → Compartir → Publicar en la web → elegí la hoja → <code>CSV</code> → copiá el link y pegalo en el casillero correspondiente. Los datos se actualizan cada vez que abrís el tablero.
   </div>
 
-  <!-- CONFIG -->
-  <div class="s-title">Configuración de fuentes de datos</div>
-  <div class="rrss-blocks" id="rrss-blocks"></div>
+  <!-- NAV TABS -->
+  <div class="main-nav">
+    <button class="main-nav-btn active" onclick="switchView('config')">⚙️ Configuración</button>
+    <button class="main-nav-btn" onclick="switchView('pendientes')">📋 Pendientes</button>
+    <button class="main-nav-btn" onclick="switchView('analitica')">📊 Analítica de Deuda</button>
+  </div>
 
-  <!-- CONSOLIDADO GLOBAL -->
-  <div class="s-title">Trabajo pendiente · consolidado total</div>
-  <div class="global-banner" id="global-banner">
-    <div class="global-left">
-      <div class="global-total-label">Total pendiente</div>
-      <div class="global-total-num" id="g-total">—</div>
-      <div class="global-total-sub" id="g-sub">Cargá datos para ver</div>
-    </div>
-    <div class="global-right">
-      <div class="g-kpi">
-        <div class="g-kpi-icon">📋</div>
-        <div class="g-kpi-num" id="g-cobf1" style="color:#7dd3fc">—</div>
-        <div class="g-kpi-lbl">Cobranza F1<br>pendiente</div>
+  <!-- VIEW: CONFIG -->
+  <div class="main-view active" id="view-config">
+    <div class="s-title" style="margin-top:0;">Configuración de fuentes de datos</div>
+    <div class="rrss-blocks" id="rrss-blocks"></div>
+  </div>
+
+  <!-- VIEW: PENDIENTES -->
+  <div class="main-view" id="view-pendientes">
+    <!-- CONSOLIDADO GLOBAL -->
+    <div class="s-title" style="margin-top:0;">Trabajo pendiente · consolidado total</div>
+    <div class="global-banner" id="global-banner">
+      <div class="g-kpi-total">
+        <div class="global-total-label">Total pendiente</div>
+        <div class="global-total-num" id="g-total">—</div>
+        <div class="global-total-sub" id="g-sub">Cargá datos para ver</div>
       </div>
       <div class="g-kpi">
         <div class="g-kpi-icon">📋</div>
-        <div class="g-kpi-num" id="g-cobf2" style="color:#93c5fd">—</div>
-        <div class="g-kpi-lbl">Cobranza F2<br>pendiente</div>
+        <div class="g-kpi-num" id="g-cobf1">—</div>
+        <div class="g-kpi-lbl">Cobranza F1 pendiente</div>
+      </div>
+      <div class="g-kpi">
+        <div class="g-kpi-icon">📋</div>
+        <div class="g-kpi-num" id="g-cobf2">—</div>
+        <div class="g-kpi-lbl">Cobranza F2 pendiente</div>
       </div>
       <div class="g-kpi">
         <div class="g-kpi-icon">🔄</div>
-        <div class="g-kpi-num" id="g-reverif" style="color:#fde68a">—</div>
-        <div class="g-kpi-lbl">Reverificaciones<br>de deuda activa</div>
+        <div class="g-kpi-num" id="g-reverif">—</div>
+        <div class="g-kpi-lbl">Reverificaciones de deuda activa</div>
       </div>
       <div class="g-kpi">
         <div class="g-kpi-icon">📞</div>
-        <div class="g-kpi-num" id="g-gest" style="color:#fca5a5">—</div>
-        <div class="g-kpi-lbl">Gestiones de<br>cobranza</div>
+        <div class="g-kpi-num" id="g-gest">—</div>
+        <div class="g-kpi-lbl">Gestiones de cobranza</div>
+      </div>
+    </div>
+
+    <!-- PENDIENTES POR MES/PRODUCTO -->
+    <div class="s-title">Pendientes por mes y producto</div>
+    <div id="pend-por-mes"></div>
+
+    <!-- MORA POR PRODUCTO -->
+    <div class="s-title">Índice de mora por producto y mes</div>
+    <div id="mora-por-producto"></div>
+  </div>
+
+  <!-- VIEW: ANALÍTICA -->
+  <div class="main-view" id="view-analitica">
+    <div class="s-title" style="margin-top:0;">Analítica de deuda</div>
+
+    <div class="an-filter-row">
+      <label>Filtrar por:</label>
+      <select id="an-filter-rrss" onchange="renderAnalitica()">
+        <option value="TODOS">Todas las RRSS</option>
+        <option value="dmt">Damatec</option>
+        <option value="oc">Opción Cuyo</option>
+      </select>
+      <select id="an-filter-mes" onchange="renderAnalitica()">
+        <option value="TODOS">Todos los meses</option>
+        <option value="0">Mes 1</option>
+        <option value="1">Mes 2</option>
+        <option value="2">Mes 3</option>
+        <option value="3">Mes 4</option>
+      </select>
+      <select id="an-filter-prod" onchange="renderAnalitica()">
+        <option value="TODOS">Todos los productos</option>
+        <option value="fibra">Fibra Óptica</option>
+        <option value="repro">Repro</option>
+        <option value="porta">Portabilidad</option>
+        <option value="pyme">PYME</option>
+      </select>
+    </div>
+
+    <div class="an-grid-2">
+      <!-- Mora por equipo -->
+      <div class="an-card">
+        <div class="an-card-header">% Mora por equipo <span class="an-card-badge" id="an-equipo-cnt">—</span></div>
+        <div class="an-scroll" id="an-equipo-bars"></div>
+      </div>
+      <!-- Ranking peores vendedores -->
+      <div class="an-card">
+        <div class="an-card-header">Ranking peores vendedores <span class="an-card-badge" id="an-rank-cnt">—</span></div>
+        <div class="an-scroll" id="an-rank-bars"></div>
+      </div>
+    </div>
+
+    <!-- Evolución por mes por equipo -->
+    <div class="an-card an-section">
+      <div class="an-card-header">Evolución de mora por equipo · mes a mes</div>
+      <div style="overflow-x:auto;">
+        <table class="evo-table" id="an-evo-table">
+          <tbody><tr><td class="empty-txt" style="border:none;">Cargá datos para ver la evolución.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Detalle por vendedor -->
+    <div class="an-card an-section">
+      <div class="an-card-header">Deuda por vendedor · detalle <span class="an-card-badge" id="an-vend-cnt">—</span></div>
+      <div class="an-scroll" style="max-height:480px; overflow-x:auto;">
+        <table class="vend-table" id="an-vend-table">
+          <thead><tr>
+            <th>Equipo</th><th>Vendedor</th>
+            <th>Ventas</th><th>% Mora</th>
+            <th>Deuda F1</th><th>Deuda F2</th><th>F1+F2</th><th>Total deuda</th>
+          </tr></thead>
+          <tbody id="an-vend-tbody"></tbody>
+        </table>
       </div>
     </div>
   </div>
-
-  <!-- PENDIENTES POR MES/PRODUCTO -->
-  <div class="s-title">Pendientes por mes y producto</div>
-  <div id="pend-por-mes"></div>
-
-  <!-- MORA POR PRODUCTO -->
-  <div class="s-title">Índice de mora por producto y mes</div>
-  <div id="mora-por-producto"></div>
 
 </div>
 
@@ -864,6 +1054,217 @@ function renderMoraPorProducto() {
     `;
   });
   container.innerHTML = html;
+}
+
+// ── SWITCH VIEW ──
+function switchView(view) {
+  document.querySelectorAll('.main-view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.main-nav-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + view).classList.add('active');
+  event.target.classList.add('active');
+  if (view === 'analitica') renderAnalitica();
+}
+
+// ── GET ALL ROWS (with filters) ──
+function getFilteredRows(rrssFil, mesFil, prodFil) {
+  const rows = [];
+  RRSS_CFG.forEach(r => {
+    if (rrssFil !== 'TODOS' && r.id !== rrssFil) return;
+    r.products.forEach(p => {
+      if (prodFil !== 'TODOS' && p.id !== prodFil) return;
+      state[r.id][p.id].forEach((m, mIdx) => {
+        if (mesFil !== 'TODOS' && mIdx !== parseInt(mesFil)) return;
+        if (!m.rows) return;
+        m.rows.forEach(row => rows.push({ ...row, _rrss: r.name, _prod: p.name, _mIdx: mIdx }));
+      });
+    });
+  });
+  return rows;
+}
+
+// ── RENDER ANALÍTICA ──
+function renderAnalitica() {
+  const rrssFil = document.getElementById('an-filter-rrss').value;
+  const mesFil  = document.getElementById('an-filter-mes').value;
+  const prodFil = document.getElementById('an-filter-prod').value;
+  const rows = getFilteredRows(rrssFil, mesFil, prodFil);
+
+  if (!rows.length) {
+    ['an-equipo-bars','an-rank-bars','an-vend-tbody'].forEach(id => {
+      document.getElementById(id).innerHTML = '<div class="empty-txt">Sin datos cargados.</div>';
+    });
+    return;
+  }
+
+  renderEquipoBars(rows);
+  renderRankingBars(rows);
+  renderEvoTable(rrssFil, prodFil);
+  renderVendTable(rows);
+}
+
+function moraColor(pct) {
+  if (pct < 0.07) return '#16a34a';
+  if (pct < 0.08) return '#b45309';
+  return '#dc2626';
+}
+function moraCls(pct) {
+  if (pct < 0.07) return 'num-ok';
+  if (pct < 0.08) return 'num-warn';
+  return 'num-danger';
+}
+
+// ── EQUIPO BARS ──
+function renderEquipoBars(rows) {
+  const eq = {};
+  rows.forEach(r => {
+    const e = (r['EQUIPO'] || 'Sin equipo').trim();
+    if (!eq[e]) eq[e] = { t: 0, d: 0 };
+    eq[e].t++;
+    if (r._hasDebt) eq[e].d++;
+  });
+
+  const list = Object.entries(eq)
+    .map(([n, v]) => ({ n, ...v, p: v.t > 0 ? v.d / v.t : 0 }))
+    .sort((a, b) => b.p - a.p);
+
+  document.getElementById('an-equipo-cnt').textContent = list.length;
+  document.getElementById('an-equipo-bars').innerHTML = list.map((e, i) => {
+    const pct = (e.p * 100).toFixed(2);
+    const barW = Math.min(e.p / 0.12 * 100, 100).toFixed(1);
+    const col = moraColor(e.p);
+    return `<div class="bar-row">
+      <span class="bar-rank">${i+1}</span>
+      <span class="bar-label" title="${e.n}">${e.n}</span>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${barW}%;background:${col}"></div></div>
+      <span class="bar-pct ${moraCls(e.p)}">${pct}%</span>
+      <span class="bar-count">${e.d}/${e.t}</span>
+    </div>`;
+  }).join('') || '<div class="empty-txt">Sin datos de equipo.</div>';
+}
+
+// ── RANKING VENDEDORES ──
+function renderRankingBars(rows) {
+  const vd = {};
+  rows.forEach(r => {
+    const v = (r['VENDEDOR'] || 'Sin vendedor').trim();
+    const e = (r['EQUIPO'] || '').trim();
+    if (!vd[v]) vd[v] = { t: 0, d: 0, e };
+    vd[v].t++;
+    if (r._hasDebt) vd[v].d++;
+  });
+
+  const list = Object.entries(vd)
+    .filter(([,v]) => v.t >= 3) // mínimo 3 ventas para rankear
+    .map(([n, v]) => ({ n, ...v, p: v.t > 0 ? v.d / v.t : 0 }))
+    .sort((a, b) => b.p - a.p)
+    .slice(0, 20);
+
+  document.getElementById('an-rank-cnt').textContent = list.length;
+  document.getElementById('an-rank-bars').innerHTML = list.map((v, i) => {
+    const pct = (v.p * 100).toFixed(2);
+    const barW = Math.min(v.p / 0.12 * 100, 100).toFixed(1);
+    const col = moraColor(v.p);
+    return `<div class="bar-row">
+      <span class="bar-rank">${i+1}</span>
+      <span class="bar-label vendedor" title="${v.n}">${v.n}</span>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${barW}%;background:${col}"></div></div>
+      <span class="bar-pct ${moraCls(v.p)}">${pct}%</span>
+      <span class="bar-count">${v.d}/${v.t}</span>
+    </div>`;
+  }).join('') || '<div class="empty-txt">Sin suficientes datos.</div>';
+}
+
+// ── EVOLUCIÓN POR MES/EQUIPO ──
+function renderEvoTable(rrssFil, prodFil) {
+  // Collect all equipos and months
+  const equipos = new Set();
+  const monthNames = Array.from({length:MONTHS}, (_,i) => {
+    const inp = document.querySelector(`.slot-name-input[id*="-${i}"]`);
+    return inp ? inp.value : `Mes ${i+1}`;
+  });
+
+  // Build data[equipo][mIdx] = {t, d}
+  const data = {};
+  RRSS_CFG.forEach(r => {
+    if (rrssFil !== 'TODOS' && r.id !== rrssFil) return;
+    r.products.forEach(p => {
+      if (prodFil !== 'TODOS' && p.id !== prodFil) return;
+      state[r.id][p.id].forEach((m, mIdx) => {
+        if (!m.rows) return;
+        m.rows.forEach(row => {
+          const e = (row['EQUIPO'] || 'Sin equipo').trim();
+          equipos.add(e);
+          if (!data[e]) data[e] = {};
+          if (!data[e][mIdx]) data[e][mIdx] = { t: 0, d: 0 };
+          data[e][mIdx].t++;
+          if (row._hasDebt) data[e][mIdx].d++;
+        });
+      });
+    });
+  });
+
+  const eqList = [...equipos].sort();
+  if (!eqList.length) {
+    document.getElementById('an-evo-table').innerHTML = '<tbody><tr><td class="empty-txt" style="border:none;">Sin datos.</td></tr></tbody>';
+    return;
+  }
+
+  // Find which months have data
+  const activeMonths = Array.from({length:MONTHS}, (_,i) => i).filter(i =>
+    eqList.some(e => data[e] && data[e][i])
+  );
+
+  const thead = `<thead><tr>
+    <th>Equipo</th>
+    ${activeMonths.map(i => `<th>${monthNames[i]}</th>`).join('')}
+  </tr></thead>`;
+
+  const tbody = `<tbody>${eqList.map(e => `<tr>
+    <td>${e}</td>
+    ${activeMonths.map(i => {
+      if (!data[e] || !data[e][i]) return '<td class="num-zero">—</td>';
+      const pct = data[e][i].t > 0 ? data[e][i].d / data[e][i].t : 0;
+      const cls = moraCls(pct);
+      return `<td class="${cls}">${(pct*100).toFixed(2)}%<br><span style="font-size:10px;color:var(--muted)">${data[e][i].d}/${data[e][i].t}</span></td>`;
+    }).join('')}
+  </tr>`).join('')}</tbody>`;
+
+  document.getElementById('an-evo-table').innerHTML = thead + tbody;
+}
+
+// ── VENDEDOR DETAIL TABLE ──
+function renderVendTable(rows) {
+  const vd = {};
+  rows.forEach(r => {
+    const v = (r['VENDEDOR'] || 'Sin vendedor').trim();
+    const e = (r['EQUIPO'] || '').trim();
+    if (!vd[v]) vd[v] = { e, t: 0, d: 0, f1: 0, f2: 0, f12: 0 };
+    vd[v].t++;
+    if (r._hasDebt) vd[v].d++;
+    if (r._cat === 'F1')   vd[v].f1++;
+    if (r._cat === 'F2')   vd[v].f2++;
+    if (r._cat === 'F1,2') vd[v].f12++;
+  });
+
+  const list = Object.entries(vd)
+    .map(([n, v]) => ({ n, ...v, p: v.t > 0 ? v.d / v.t : 0 }))
+    .sort((a, b) => b.p - a.p);
+
+  document.getElementById('an-vend-cnt').textContent = list.length;
+  document.getElementById('an-vend-tbody').innerHTML = list.map(v => {
+    const pct = (v.p * 100).toFixed(2);
+    const cls = moraCls(v.p);
+    return `<tr>
+      <td><span class="rrss-chip dmt" style="background:#f0f9ff;color:#0369a1;border-color:#bae6fd">${v.e||'—'}</span></td>
+      <td>${v.n}</td>
+      <td class="num-muted">${v.t}</td>
+      <td class="${cls}">${pct}%</td>
+      <td class="${v.f1>0?'num-warn':'num-zero'}">${v.f1}</td>
+      <td class="${v.f2>0?'num-danger':'num-zero'}">${v.f2}</td>
+      <td class="${v.f12>0?'num-danger':'num-zero'}">${v.f12}</td>
+      <td class="${v.d>0?'num-danger':'num-ok'}">${v.d}</td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="8" class="empty-txt">Sin datos.</td></tr>';
 }
 
 // ── INIT ──
